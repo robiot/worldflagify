@@ -11,6 +11,7 @@ import { Analytics } from "@/components/common/Analytics";
 import { ApelEasterEgg } from "@/components/common/Apel";
 import { MetaDescription, MetaTitle } from "@/lib/content/meta";
 import { cn } from "@/lib/utils";
+import { ClientProviders } from "@/components/ClientProviders";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,17 +36,17 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={cn(inter.className, "bg-background text-foreground")}
-      >
-        <Navbar />
+      <body className={cn(inter.className, "bg-background text-foreground")}>
+        <ClientProviders>
+          <Navbar />
 
-        <ApelEasterEgg />
-        {children}
+          <ApelEasterEgg />
+          {children}
 
-        <Footer />
+          <Footer />
 
-        <Analytics />
+          <Analytics />
+        </ClientProviders>
       </body>
     </html>
   );

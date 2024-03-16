@@ -7,7 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
+import {
+  IDKitWidget,
+  ISuccessResult,
+  VerificationLevel,
+} from "@worldcoin/idkit";
 import { CheckCheck, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,23 +22,62 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useState } from "react";
+import { enviroment } from "@/lib/enviroment";
+import { useMutation } from "@tanstack/react-query";
+import { Spinner } from "@/components/ui/spinner";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
-  prompt: zodRequiredString,
+  mid: zodRequiredString,
+  description: zodRequiredString,
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 export default function ReportPage() {
+  const router = useRouter();
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
+  });
+
+  const [isVerified, setIsVerified] = useState(false);
+  const [idData, setIDData] = useState<ISuccessResult>();
+
+  const report = useMutation({
+    mutationKey: ["report"],
+    mutationFn: async () => {
+      if (!idData) return;
+      const response = await fetch("/api/verify", {
+        method: "POST",
+        body: JSON.stringify({
+          merkle_root: idData.merkle_root,
+          nullifier_hash: idData.nullifier_hash,
+          proof: idData.proof,
+          verification_level: idData.verification_level,
+        }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.text();
+
+      if (response.status == 200) {
+        alert("Successfully filed report. Thank you!");
+        router.push("/");
+      } else {
+        alert("Failed to file report. Invalid verification");
+      }
+    },
   });
 
   return (
     <Container size="small" className="mt-24">
       <Card>
         <CardHeader>
-          <CardTitle>Report an address</CardTitle>
+          <CardTitle>Report an domain or address</CardTitle>
           {/* <CardTitle>1. Verify identity</CardTitle> */}
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -42,10 +85,13 @@ export default function ReportPage() {
             <IDKitWidget
               action="report"
               // signal="my_signal"
-              app_id="app_staging_c1b712d4cbcf6127a1750e851d9d4540"
-              onSuccess={() => {}}
+              app_id={enviroment.WI_APP_ID}
+              onSuccess={(result) => {
+                setIsVerified(true);
+                setIDData(result);
+              }}
               verification_level={VerificationLevel.Device}
-              handleVerify={() => {
+              handleVerify={(result) => {
                 console.log("you verified!!@");
               }}
             >
@@ -60,10 +106,12 @@ export default function ReportPage() {
                 </Button>
               )}
             </IDKitWidget>
-            <p className="hidden gap-2">
-              <CheckCheck />
-              Verified
-            </p>
+            {isVerified && (
+              <p className="flex gap-2">
+                <CheckCheck />
+                Verified
+              </p>
+            )}
           </div>
 
           <div>
@@ -87,23 +135,28 @@ export default function ReportPage() {
             </p>
             <Input
               placeholder="Malicious web domain, ethereum address or ens domain"
-              {...form.register("prompt")}
+              {...form.register("mid")}
             />
           </div>
 
           <div>
             <p className="mb-1 mt-5 font-bold text-foreground/80">
-              Describe why the address is malicious
+              Describe why the domain/address is malicious
             </p>
-            <Textarea placeholder="Explain breifly what makes this address malicious." />
+            <Textarea
+              placeholder="Explain breifly what makes this malicious."
+              {...form.register("description")}
+            />
           </div>
 
           <Button
+            disabled={!isVerified || !form.formState.isValid}
             size="lg"
             onClick={() => {
-              alert("Successfully filed report. Thank you!");
+              report.mutate();
             }}
           >
+            {report.isPending && <Spinner size="sm" className="mr-3" />}
             File report
           </Button>
         </CardContent>

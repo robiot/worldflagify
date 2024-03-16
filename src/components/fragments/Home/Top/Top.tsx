@@ -29,7 +29,7 @@ export const HomeTopSection = () => {
           </HeroHeading>
           <HeroSubHeading>
             WorldFlagify is an open source project with aims to increase the
-            security on web3. This Base hosted list can be used to check if an address is malicious.
+            security on web3. This blockchain hosted list can be used to check if an address is malicious.
           </HeroSubHeading>
 
           <div className="flex gap-3">

@@ -18,10 +18,13 @@ export const HomeFeaturedSection = () => {
       <Container className="pt-32 flex flex-col items-center text-center gap-4 mb-24">
         <SectionHeading>How does it work?</SectionHeading>
 
-        <Paragraph>
-          This works by voting. If a address is flagged by enough users, it will
-          be marked as malicious.
-        </Paragraph>
+        <div className="w-3/4">
+          <Paragraph>
+            This works by voting. If a address is flagged by enough users, it
+            will be marked as malicious. Worldcoin is used to make sure only
+            real humans can report, and only once.
+          </Paragraph>
+        </div>
       </Container>
     </section>
   );

@@ -1,3 +1,3 @@
 export const enviroment = {
-  APP_URL: process.env.NEXT_PUBLIC_APP_URL!,
+  WI_APP_ID: "app_staging_c1b712d4cbcf6127a1750e851d9d4540" as `app_${string}`,
 };
