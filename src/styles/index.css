@@ -1,0 +1,15 @@
+.border {
+  @apply border-border;
+}
+
+.img-width {
+  width: calc(100% / 6 - 0.86rem);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
