@@ -37,7 +37,8 @@ export const UploadBox: FC = () => {
 
         <Button className="w-full mt-3" disabled>Check</Button>
 
-        <p className="mt-7 text-sm text-primary">Or check the full list on Filecoin</p>
+        <p className="mt-7 text-sm text-primary">Or check the data on Base</p>
+
       </Card>
     </>
   );

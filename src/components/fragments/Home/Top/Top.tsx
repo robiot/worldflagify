@@ -29,14 +29,20 @@ export const HomeTopSection = () => {
           </HeroHeading>
           <HeroSubHeading>
             WorldFlagify is an open source project with aims to increase the
-            security on web3. This list can be used to check if addy malicious.
+            security on web3. This Base hosted list can be used to check if an address is malicious.
           </HeroSubHeading>
 
           <div className="flex gap-3">
             <Button size="lg" asChild>
               <Link href="/report">Report</Link>
             </Button>
-            <Button size="lg" variant="secondary">
+            <Button
+              size="lg"
+              variant="secondary"
+              onClick={() => {
+                alert("Integration guide coming soon");
+              }}
+            >
               Integrate into your app
             </Button>
           </div>
