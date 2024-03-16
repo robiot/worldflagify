@@ -90,7 +90,7 @@ export default function ReportPage() {
                 setIsVerified(true);
                 setIDData(result);
               }}
-              verification_level={VerificationLevel.Device}
+              verification_level={VerificationLevel.Orb}
               handleVerify={(result) => {
                 console.log("you verified!!@");
               }}
