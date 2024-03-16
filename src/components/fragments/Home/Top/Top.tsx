@@ -39,11 +39,8 @@ export const HomeTopSection = () => {
             <Button
               size="lg"
               variant="secondary"
-              onClick={() => {
-                alert("Integration guide coming soon");
-              }}
             >
-              Integrate into your app
+              <Link href="/api/info">Integrate into your app</Link>
             </Button>
           </div>
           <div className="flex flex-row items-center gap-9 gap-y-10 mt-6 md:mt-0">

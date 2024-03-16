@@ -22,7 +22,7 @@ export const HomeFeaturedSection = () => {
           <Paragraph>
             This works by voting. If a address is flagged by enough users, it
             will be marked as malicious. Worldcoin is used to make sure only
-            real humans can report, and only once.
+            real humans can report, and only once per address/domain.
           </Paragraph>
         </div>
       </Container>
